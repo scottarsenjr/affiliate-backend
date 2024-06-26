@@ -1,5 +1,3 @@
-import os
-
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
@@ -12,11 +10,10 @@ from drf_yasg.views import get_schema_view
 class APISchemeGenerator(OpenAPISchemaGenerator):
     def get_schema(self, request=None, public=True):
         schema = super().get_schema(request, public)
-
-        if os.environ.get('DOMAIN'):
-            schema.host = os.environ.get('DOMAIN')
-            schema.base_path = '/api/v1'
-
+        if request:
+            forwarded_host = request.META.get('HTTP_X_FORWARDED_HOST')
+            if forwarded_host:
+                schema.host = forwarded_host
         return schema
 
 

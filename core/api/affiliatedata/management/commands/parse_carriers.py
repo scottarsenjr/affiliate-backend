@@ -1,6 +1,6 @@
+import os
 from concurrent.futures import ThreadPoolExecutor
 from datetime import timedelta
-from os import environ as env
 
 import requests
 from django.core.management import BaseCommand
@@ -19,7 +19,7 @@ class Command(BaseCommand):
 
     def parse_carriers(self):
         url = 'https://www.trafficcompany.com/feed/ivr-carrier-performance?access-token={}'.format(
-            env['PARSE_ACCESS_TOKEN']
+            os.environ.get('PARSE_ACCESS_TOKEN')
         )
 
         try:

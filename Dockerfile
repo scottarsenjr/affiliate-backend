@@ -6,7 +6,7 @@ WORKDIR /opt/project
 
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
-ENV PYTHONPATH ./core
+ENV PYTHONPATH ./
 ENV CORESETTINGS_IN_DOCKER true
 
 # Install dependencies
@@ -25,14 +25,13 @@ RUN poetry install --no-root
 COPY ["README.md", "Makefile", "./"]
 COPY core core
 COPY local local
-COPY logs logs
 COPY media media
+COPY scripts scripts
 
 # Expose the Django development server port (adjust if needed)
 EXPOSE 8000
 
-# Set up the entrypoint
-COPY scripts/entrypoint.sh /entrypoint.sh
-RUN chmod a+x /entrypoint.sh
+# Set up the entrypoints
+RUN chmod a+x ./scripts/entrypoint.sh ./scripts/celery-entrypoint.sh ./scripts/celery-beat-entrypoint.sh
 
-ENTRYPOINT ["/entrypoint.sh"]
+ENTRYPOINT ["./scripts/entrypoint.sh"]

@@ -10,4 +10,7 @@ $RUN_MANAGE_PY collectstatic --no-input
 echo 'Running migrations...'
 $RUN_MANAGE_PY migrate --no-input
 
+echo 'Parsing carriers...'
+$RUN_MANAGE_PY parse_carriers
+
 poetry run gunicorn --bind 0.0.0.0:8000 core.project.asgi -w 4 -k uvicorn.workers.UvicornWorker

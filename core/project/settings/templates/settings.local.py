@@ -3,7 +3,8 @@ from pathlib import Path
 
 from dotenv import load_dotenv
 
-dotenv_path = Path.joinpath(Path(__file__).parent.parent.parent.parent.resolve(), '.dev.env')
+dotenv_path = Path.joinpath(Path(__file__).parent.parent.parent.parent.resolve(), '.env.local')
+print(dotenv_path)
 load_dotenv(dotenv_path)
 
 DEBUG = True
@@ -22,9 +23,9 @@ CACHES = {
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.environ.get('POSTGRES_DB'),
-        'USER': os.environ.get('POSTGRES_USER'),
-        'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
+        'NAME': os.getenv('POSTGRES_DB'),
+        'USER': os.getenv('POSTGRES_USER'),
+        'PASSWORD': os.getenv('POSTGRES_PASSWORD'),
         'HOST': 'localhost',
         'PORT': '5432',
         'ATOMIC_REQUESTS': True,

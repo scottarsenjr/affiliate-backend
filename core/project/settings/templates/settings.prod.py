@@ -1,12 +1,11 @@
 import os
-from os import environ as env
 from pathlib import Path
 
 from dotenv import load_dotenv
 
 worker_pid = os.getpid()
 
-dotenv_path = Path.joinpath(Path(__file__).parent.parent.parent.parent.resolve(), '.env')
+dotenv_path = Path.joinpath(Path(__file__).parent.parent.parent.parent.resolve(), '.env.prod')
 
 print(
     'Loading ENV variables from {env_path} for worker with PID: {worker_pid}'.format(
@@ -33,14 +32,24 @@ CACHES = {
         'LOCATION': 'redis://cache:6379/0',
         'OPTIONS': {'CLIENT_CLASS': 'django_redis.client.DefaultClient'},
     },
+    'celery_broker': {
+        'BACKEND': 'django_redis.cache.RedisCache',
+        'LOCATION': 'redis://cache:6379/1',
+        'OPTIONS': {'CLIENT_CLASS': 'django_redis.client.DefaultClient'},
+    },
+    'celery_cache_backend': {
+        'BACKEND': 'django_redis.cache.RedisCache',
+        'LOCATION': 'redis://cache:6379/2',
+        'OPTIONS': {'CLIENT_CLASS': 'django_redis.client.DefaultClient'},
+    },
 }
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': env['POSTGRES_DB'],
-        'USER': env['POSTGRES_USER'],
-        'PASSWORD': env['POSTGRES_PASSWORD'],
+        'NAME': os.environ.get('POSTGRES_DB'),
+        'USER': os.environ.get('POSTGRES_USER'),
+        'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
         'HOST': 'db',
         'PORT': '5432',
         'ATOMIC_REQUESTS': True,

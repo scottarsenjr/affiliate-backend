@@ -31,13 +31,15 @@ db.sqlite3
 
 # Environments
 .venv
-*.env
+.env.local
+.env.prod
 ENV/
 env.bak/
 env/
 venv
 venv.bak/
 venv/
+local/
 
 # IDEs
 .DS_Store

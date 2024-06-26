@@ -1,7 +1,9 @@
 ifeq ($(OS),Windows_NT)
     MANAGE_PY := poetry run python -m core.manage
+    COPY_CMD := python -c "import shutil; shutil.copyfile('./core/project/settings/templates/settings.local.py', './local/settings.local.py'); shutil.copyfile('./core/project/settings/templates/settings.prod.py', './local/settings.prod.py')"
 else
     MANAGE_PY := poetry run python3.11 -m core.manage
+    COPY_CMD := python3 -c "import shutil; shutil.copyfile('./core/project/settings/templates/settings.local.py', './local/settings.local.py'); shutil.copyfile('./core/project/settings/templates/settings.prod.py', './local/settings.prod.py')"
 endif
 
 # Project Setup/Managing commands
@@ -11,8 +13,7 @@ install:
 
 .PHONY: copy-template
 copy-template:
-	cp ./core/project/settings/templates/settings.dev.py ./local/settings.dev.py
-	cp ./core/project/settings/templates/settings.prod.py ./local/settings.prod.py
+	$(COPY_CMD)
 
 .PHONY: pre-commit-uninstall
 pre-commit-uninstall:
@@ -52,6 +53,19 @@ run-celery-beat:
 .PHONY: update
 update:
 	install migrate update-pre-commit
+
+.PHONY: lint
+lint:
+	poetry run pre-commit run --all-files
+	poetry run ruff check .
+
+.PHONY: build-prod-container
+build-prod-container:
+	docker compose --env-file .env.prod up --build -d
+
+.PHONY: prod-container-up
+prod-container-up:
+	docker compose --env-file .env.prod up
 
 # Prevent make from interpreting the argument as a make target
 %:

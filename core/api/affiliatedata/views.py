@@ -1,11 +1,11 @@
 from django_filters.rest_framework import DjangoFilterBackend
+from drf_yasg.utils import swagger_auto_schema
 from rest_framework import viewsets
-from rest_framework.filters import \
-    OrderingFilter  # Import OrderingFilter for ordering
 
 from .filters import CarrierDataFilter
 from .models import CarrierData
 from .serializers import CarrierDataSerializer
+from .utils.swagger_schemas import CarrierDataViewSetSwaggerSchema
 
 
 class CarrierDataViewSet(viewsets.ModelViewSet):
@@ -13,12 +13,13 @@ class CarrierDataViewSet(viewsets.ModelViewSet):
     queryset = CarrierData.objects.all()
     serializer_class = CarrierDataSerializer
 
-    filter_backends = (
-        DjangoFilterBackend,
-        OrderingFilter,
-    )
+    filter_backends = (DjangoFilterBackend,)
 
     filterset_class = CarrierDataFilter
+
+    @swagger_auto_schema(**CarrierDataViewSetSwaggerSchema.get_config())
+    def list(self, request, *args, **kwargs):
+        return super().list(request, *args, **kwargs)
 
     def get_queryset(self):
         queryset = super().get_queryset()
