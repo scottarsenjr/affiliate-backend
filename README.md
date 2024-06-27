@@ -40,10 +40,15 @@ Required settings >>> .env.prod
 CORESETTINGS_IN_DOCKER=true
 SECRET_KEY='django-insecure-=okvqjswarmd2ymc#jxqo-t7a(9qpvk-dk8v#9$t^c(dlbmw)b'
 
+DOMAIN=localhost
+
 # PostgreSQL & pgAdmin
 POSTGRES_DB=affiliate
 POSTGRES_USER=postgres
 POSTGRES_PASSWORD=strong_password
+
+PGADMIN_DEFAULT_EMAIL=email@dev.affiliate
+PGADMIN_DEFAULT_PASSWORD=strong_password
 
 # Parse
 PARSE_ACCESS_TOKEN=YOUR_API_TOKEN
@@ -59,15 +64,10 @@ Required settings >>> .env.local
 CORESETTINGS_IN_DOCKER=true
 SECRET_KEY='django-insecure-=okvqjswarmd2ymc#jxqo-t7a(9qpvk-dk8v#9$t^c(dlbmw)b'
 
-DOMAIN=localhost
-
 # PostgreSQL & pgAdmin
 POSTGRES_DB=affiliate
 POSTGRES_USER=postgres
 POSTGRES_PASSWORD=strong_password
-
-PGADMIN_DEFAULT_EMAIL=email@dev.affiliate
-PGADMIN_DEFAULT_PASSWORD=strong_password
 
 # Parse
 PARSE_ACCESS_TOKEN=YOUR_API_TOKEN
